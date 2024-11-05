@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Zone Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 500px;
+            width: 90%;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Header Styling */
+        h1 {
+            color: #004f99;
+            margin-bottom: 15px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Time Display Styling */
+        .time-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .time-container img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .time-container img:hover {
+            transform: rotate(360deg);
+        }
+
+        .current-time {
+            font-size: 24px;
+            color: #004f99;
+            font-weight: bold;
+        }
+
+        /* Form and Dropdown Styling */
+        label {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        select {
+            padding: 12px 15px;
+            font-size: 16px;
+            width: 100%;
+            border: 2px solid #66a6ff;
+            border-radius: 8px;
+            background: #f0f8ff;
+            color: #333;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: border-color 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            border-color: #004f99;
+        }
+
+        /* Custom dropdown arrow */
+        .custom-select::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #004f99;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            color: #fff;
+            background: linear-gradient(90deg, #66a6ff, #89f7fe);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.3s ease;
+            outline: none;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #004f99, #66a6ff);
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Zone Converter</h1>
+        
+        <div class="time-container">
+            <!-- Clock Icon -->
+            <img src="https://img.icons8.com/ios-filled/50/004f99/clock.png" alt="Clock Icon">
+            <span class="current-time" id="current-time">{{ current_time }}</span>
+        </div>
+
+        <h2>Select a Time Zone</h2>
+        <form method="post" id="timezone-form">
+            <label for="timezone">Choose a timezone:</label>
+            <div class="custom-select">
+                <select name="timezone" id="timezone" onchange="updateTime()">
+                    {% for tz in timezones %}
+                        <option value="{{ tz }}" {% if tz == selected_timezone %}selected{% endif %}>{{ tz }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Update Time</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to fetch and update the time without reloading
+        async function updateTime() {
+            const timezone = document.getElementById("timezone").value;
+            const response = await fetch(`/?timezone=${timezone}`, { method: 'POST' });
+            const data = await response.json();
+            document.getElementById("current-time").textContent = data.current_time;
+        }
+    </script>
+</body>
+</html>
+
