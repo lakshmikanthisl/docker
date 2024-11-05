@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Zone Converter</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Header Styling */
+        h1 {
+            color: #0077b6;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        p {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        /* Form and Dropdown Styling */
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            appearance: none;
+            background-color: #f4f4f4;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #0077b6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005f87;
+        }
+
+        .timezone-display {
+            font-weight: bold;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Zone Converter</h1>
+        <p>The current time in <span class="timezone-display">{{ selected_timezone }}</span> is:</p>
+        <p class="timezone-display">{{ current_time }}</p>
+
+        <h2>Select a Time Zone</h2>
+        <form method="post">
+            <label for="timezone">Choose a timezone:</label>
+            <select name="timezone" id="timezone">
+                {% for tz in timezones %}
+                    <option value="{{ tz }}" {% if tz == selected_timezone %}selected{% endif %}>{{ tz }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Update Time</button>
+        </form>
+    </div>
+</body>
+</html>
+
